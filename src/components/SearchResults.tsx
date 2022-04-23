@@ -17,3 +17,14 @@ export function SearchResults({ results }: SearchResultsProps) {
     </div>
   );
 }
+
+// Fluxo de renderização do react
+/**
+ * 1. Cria uma nova versão do componente
+ * 2. Compara com a versão anterior
+ * 3. Se houver alterações, atualiza apenas o que mudou
+ */
+
+/**
+ * Se o componente pai renderizar todos os filhos irão renderizar novamente
+ */
