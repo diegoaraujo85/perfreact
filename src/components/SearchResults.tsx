@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { ProductItem } from './ProductItem';
 
 interface SearchResultsProps {
@@ -9,8 +10,15 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ results }: SearchResultsProps) {
+  const totalPrice = useMemo(() => {
+    return results.reduce((total, product) => {
+      return total + product.price;
+    }, 0);
+  }, [results]);
   return (
     <div>
+      <h2>Valor total: {totalPrice}</h2>
+
       {results.map(product => (
         <ProductItem product={product} />
       ))}
@@ -27,4 +35,10 @@ export function SearchResults({ results }: SearchResultsProps) {
 
 /**
  * Se o componente pai renderizar todos os filhos irão renderizar novamente
+ */
+
+/**
+ * Quando usar o useMemo?
+ * 1. Cálculos pesados
+ * 2. Igualdade referencial (quando passa a informação a um componente filho)
  */
