@@ -1,5 +1,19 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
+// import { AddProductToWishList } from './AddProductToWishList';
+import dynamic from 'next/dynamic';
+import { AddProductToWishListProps } from './AddProductToWishList';
 
+const AddProductToWishList = dynamic<AddProductToWishListProps>(
+  () =>
+    import('./AddProductToWishList').then(
+      module => module.AddProductToWishList
+    ),
+  {
+    loading: () => <span>Loading...</span>,
+  }
+);
+
+// lazy load ou code splitting ou dynamic import: https://pt-br.reactjs.org/docs/code-splitting.html
 interface ProductItemProps {
   product: {
     id: number;
@@ -11,13 +25,19 @@ interface ProductItemProps {
 }
 
 function ProductItemComponent({ product, onAddToWishList }: ProductItemProps) {
-  console.log({ product });
+  const [isAddingToWishList, setIsAddingToWishList] = useState(false);
   return (
     <div>
       {product.name} - <strong>{product.priceFormatted}</strong>
-      <button onClick={() => onAddToWishList(product.id)}>
+      <button onClick={() => setIsAddingToWishList(true)}>
         Add to Wishlist
       </button>
+      {isAddingToWishList && (
+        <AddProductToWishList
+          onRequestClose={() => setIsAddingToWishList(false)}
+          onAddToWishList={() => onAddToWishList(product.id)}
+        />
+      )}
     </div>
   );
 }
